@@ -158,7 +158,7 @@ const CardPreview: React.FC<CardPreviewProps> = ({
 
     if (swiper && swiper.slides) {
       try {
-        const imgData = await captureSwiperImages(swiperRef, setIsCapturing, imageLoaded);
+        const imgData = await captureSwiperImages(swiperRef, setIsCapturing);
 
         // Create a download link and trigger it
         const link: any = document.createElement("a");

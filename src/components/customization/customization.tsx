@@ -501,7 +501,7 @@ const Customization: React.FC<CustomizationSectionProps> = ({
       let imgData;
 
       if (swiper && slides) {
-        imgData = await captureSwiperImages(swiperRef, setIsCapturing, imageLoaded);
+        imgData = await captureSwiperImages(swiperRef, setIsCapturing);
       }
 
       if (imgData) {
