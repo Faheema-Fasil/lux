@@ -153,22 +153,19 @@ const CardPreview: React.FC<CardPreviewProps> = ({
   };
 
   const handleSave = async () => {
-    setIsSaving(true);
     const swiper = swiperRef?.current?.swiper;
 
     if (swiper && swiper.slides) {
       try {
-        const imgData = await captureSwiperImages(swiperRef, setIsCapturing);
+        const imgData = await captureSwiperImages(swiper, swiper.slides, swiperSize);
 
         // Create a download link and trigger it
-        const link: any = document.createElement("a");
-        // link.href = imgData;
-        // link.download = "combined_slides.png";
-        // link.click();
-        setIsSaving(false);
+        const link = document.createElement("a");
+        link.href = imgData;
+        link.download = "combined_slides.png";
+        link.click();
       } catch (error) {
         console.error("Error capturing slides:", error);
-        setIsSaving(false);
       }
     }
   };

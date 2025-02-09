@@ -1,11 +1,10 @@
 import { format } from "date-fns";
 import { countryCodes } from "./country";
-import { fetchDataApi, uploadImageApi } from "@/server-api/apifunctions/apiService";
+import {  fetchDataApi, uploadImageApi } from "@/server-api/apifunctions/apiService";
 import { cssColors } from "./colors";
 import { toCanvas } from "html-to-image";
 import { apiEndpoints } from "@/server-api/config/api.endpoints";
 import axios from "axios";
-import { domToCanvas, domToPng } from 'modern-screenshot'
 
 // export const formatPrice = (price: string | number) => {
 //   if (price !== null && price !== undefined && !isNaN(Number(price))) {
@@ -142,49 +141,43 @@ export const uploadImage = async (imgData: string, fileName: string, size?: numb
   }
 };
 
-export const captureSwiperImages = async (swiperRef: any, setIsCapturing: any) => {
-  const scaleFactor = 1.24;
+import html2canvas from "html2canvas";
 
-  if (!swiperRef?.current?.swiper || !swiperRef.current.swiper.slides.length) {
-    console.error("Swiper not initialized or has no slides");
-    return;
-  }
+export const captureSwiperImages = async (
+  swiper: any,
+  slides: any,
+  swiperSize: any
+) => {
+  const captureContainer = document.createElement("div");
+  captureContainer.style.display = "flex";
+  captureContainer.style.position = "absolute";
+  captureContainer.style.top = "-9999px";
+  captureContainer.style.left = "-9999px";
+  captureContainer.style.width = `${
+    Number(swiperSize.width) * slides.length
+  }px`;
+  captureContainer.style.height = `${swiperSize.height}px`;
 
-  const swiper = swiperRef.current.swiper;
-  const originalIndex = swiper.activeIndex;
+  slides.forEach((slide: any) => {
+    const clonedSlide = slide.cloneNode(true);
+    clonedSlide.style.width = `${swiperSize.width}px`;
+    clonedSlide.style.height = `${swiperSize.height}px`;
+    captureContainer.appendChild(clonedSlide);
+  });
 
-  await new Promise((resolve) => setTimeout(resolve, 100));
+  document.body.appendChild(captureContainer);
 
-  const captureSlide = async (index: number) => {
-    swiper.slideTo(index);
+  const canvas = await html2canvas(captureContainer, {
+    scale: window.devicePixelRatio || 1,
+    useCORS: true,
+    width: captureContainer.scrollWidth,
+    height: captureContainer.scrollHeight,
+  });
+  const imgData = canvas.toDataURL("image/png");
 
-    const slide: any = document.querySelector(".swiper-slide-active");
-    if (!slide) return null;
+  document.body.removeChild(captureContainer);
 
-    const img = slide.querySelector("img");
-    if (!img) return null;
-
-
-    const capturedCanvas = domToPng(img).then(dataUrl => {
-      const link = document.createElement('a')
-      link.download = 'screenshot.png'
-      link.href = dataUrl
-      link.click()
-    })
-
-    return capturedCanvas;
-  };
-
-  const frontCanvas = await captureSlide(0);
-  const backCanvas = await captureSlide(1);
-
-  swiper.slideTo(originalIndex);
-
-  if (frontCanvas && backCanvas) {
-    const mergedImage = frontCanvas;
-    return mergedImage;
-  }
-
+  return imgData;
 };
 
 // export const captureSwiperImages = async (
@@ -362,7 +355,7 @@ export const fetchAllVariationData = async (variationIds: number[]) => {
         (meta: { key: string; value: string[] }) => meta.key === "woo_variation_gallery_images"
       )?.value;
 
-      console.log("galleryImageIds", galleryImageIds)
+    console.log("galleryImageIds",galleryImageIds)
 
 
       let galleryImages: any = [];

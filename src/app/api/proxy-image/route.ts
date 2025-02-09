@@ -29,6 +29,7 @@ export async function GET(request: NextRequest) {
       headers: {
         "Content-Type": contentType || "application/octet-stream",
         "Cache-Control": "public, max-age=3600",
+        "Access-Control-Allow-Origin": "*", // Allow cross-origin access
       },
     });
   } catch (error) {
