@@ -141,7 +141,7 @@ export const uploadImage = async (imgData: string, fileName: string, size?: numb
   }
 };
 
-export const captureSwiperImages = async (swiperRef: any, setIsCapturing: any, imageLoaded: any) => {
+export const captureSwiperImages = async (swiperRef: any, setIsCapturing: any) => {
   const scaleFactor = 1.24;
 
   if (!swiperRef?.current?.swiper || !swiperRef.current.swiper.slides.length) {
@@ -158,34 +158,29 @@ export const captureSwiperImages = async (swiperRef: any, setIsCapturing: any, i
     swiper.slideTo(index);
     await new Promise((resolve) => setTimeout(resolve, 500));
 
-    if (!imageLoaded) {
-      await new Promise((resolve) => setTimeout(resolve, 500)); // Wait for image load
-    }
-
     const slide: any = document.querySelector(".swiper-slide-active");
     if (!slide) return null;
 
     const img = slide.querySelector("img");
     if (!img) return null;
-  
-    // Wait for image load if not complete
-    if (!img.complete) {
-      await new Promise<void>((resolve, reject) => {
-        img.onload = () => resolve();
-        img.onerror = () => reject(new Error("Image failed to load"));
-      });
-    }
 
- 
+    await new Promise((resolve, reject) => {
+      img.onload = () => {
+        img.decode().then(() => {
+          requestAnimationFrame(() => resolve(img));
+        }).catch(reject);
+      };
+      img.onerror = () => reject(new Error("Image failed to load"));
+    });
+
     const capturedCanvas = await toCanvas(slide, {
       pixelRatio: 1,
       backgroundColor: undefined,
       includeQueryParams: true,
       filter: (node) => {
         if (node.nodeName === "img") {
-          (node as HTMLImageElement).src = `/api/proxy-image?url=${
-            (node as HTMLImageElement).src
-          }`;
+          (node as HTMLImageElement).src = `/api/proxy-image?url=${(node as HTMLImageElement).src
+            }`;
         }
         return true;
       },
@@ -218,9 +213,6 @@ export const captureSwiperImages = async (swiperRef: any, setIsCapturing: any, i
 
     mergedCanvas.width = (frontCanvas.width + backCanvas.width) * scaleFactor;
     mergedCanvas.height = Math.max(frontCanvas.height, backCanvas.height) * scaleFactor;
-
-    // context.drawImage(frontCanvas, 0, 0);
-    // context.drawImage(backCanvas, frontCanvas.width, 0);
 
     context.drawImage(
       frontCanvas,
