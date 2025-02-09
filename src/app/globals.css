@@ -1,0 +1,637 @@
+/**
+ * Author: Shadow Themes
+ * Author URL: https://shadow-themes.com
+ */
+
+/* Import fonts */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import Flowbite styles */
+@import "flowbite";
+
+/* Root Variables */
+:root {
+  --lux-primary: #b88c4f;
+  --lux-secondary: #f0dac6;
+  --lux-tertiary: #F3F4F6;
+  --lux-dark-bg: #343434;
+  --lux-light-bg: #f9f6f0;
+  --lux-border: #b88c4f;
+  --lux-text-white: #ffffff;
+  --lux-text-black: #000000;
+  --lux-text-gradient-start: #b88c4f;
+  --lux-text-gradient-middle: #d69c1f;
+  --lux-text-gradient-end: #eeac36;
+  --background: #ffffff;
+  --foreground: #171717;
+  --font-red-hat-display: "Red Hat Display", Arial, Helvetica, sans-serif;
+  --font-philosopher: "Philosopher", serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+/* Typography */
+body {
+  color: var(--foreground);
+
+  /* background: var(--lux-light-bg); */
+  font-family: var(--font-red-hat-display);
+  -webkit-font-smoothing: antialiased; /* Smoother fonts on WebKit-based browsers */
+  -moz-osx-font-smoothing: grayscale; /* Smoother fonts on macOS browsers */
+  font-smooth: always; /* Enables font smoothing on certain browsers */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-philosopher) !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: always;
+}
+
+p,
+span,
+a,
+button {
+  font-family: var(--font-red-hat-display);
+}
+
+.vimeoclass #player {
+  @apply !max-w-[100%]
+}
+
+/* .vimeoclass  {
+  @apply !max-w-[10px]
+} */
+
+.vimeoclass .vp-video-wrapper video {
+  object-fit: cover!;
+}
+
+/* Custom Buttons */
+.btn-primary {
+  @apply bg-primary text-white border border-primary rounded-full uppercase font-normal;
+}
+.btn-primary:hover {
+  @apply bg-secondary border-secondary text-hoverText;
+}
+
+.btn-transparent {
+  @apply bg-transparent border border-hoverText text-hoverText rounded-full uppercase font-normal;
+}
+.btn-transparent:hover {
+  @apply bg-secondary border-secondary text-hoverText;
+}
+
+/* Backgrounds */
+.bg-primary {
+  background-color: var(--lux-primary);
+}
+
+.bg-secondary {
+  background-color: var(--lux-secondary);
+}
+
+.bg-dark {
+  background-color: var(--lux-dark-bg);
+}
+
+.bg-light {
+  background-color: var(--lux-light-bg);
+}
+
+/* Text Colors */
+.text-white {
+  color: var(--lux-text-white);
+}
+
+.text-black {
+  color: var(--lux-text-black);
+}
+
+/* Borders */
+.border-primary {
+  border-color: var(--lux-border);
+}
+
+/* Gradient Text */
+.text-title-gradient {
+  background: linear-gradient(
+    90deg,
+    var(--lux-text-gradient-start) 0%,
+    var(--lux-text-gradient-middle) 49%,
+    var(--lux-text-gradient-end) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.gradient-text {
+  background-image: linear-gradient(
+    to right,
+    var(--lux-text-gradient-start) 0%,
+    var(--lux-text-gradient-middle) 49%,
+    var(--lux-text-gradient-end) 100%
+  );
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.container{
+  @apply p-3 xl:px-20 2xl:px-7
+}
+
+
+.pages{
+  @apply mx-auto px-3 md:px-6 lg:px-8 py-5 md:p-24 xl:container
+}
+
+/* Page Transition */
+.page-container {
+  position: relative;
+  transition: opacity 0.5s ease-out;
+}
+
+.page-transition {
+  opacity: 0;
+}
+
+  /* Hide default lines and controls */
+
+
+  .moveable-control .moveable-control-box {
+    border: none !important;
+  }
+
+  /* Style the rotation handle */
+  .moveable-control .moveable-rotation-control {
+    background-color: #4a5568 !important;
+    border: 2px solid white !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
+    position: absolute;
+    z-index: 10000;
+    top: -10px;
+    right: -10px;
+    width: 30px;
+    height: 30px;
+  }
+
+  .moveable-control .moveable-rotation-line {
+    display: none !important;
+  }
+
+  .moveable-control .moveable-rotation-control {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Add rotation icon */
+  .moveable-control .moveable-rotation-control::before {
+    content: "↻";
+    color: white;  
+    font-size: 22px;
+    line-height: 30px;
+    width: 30px;
+    display: block;
+  }
+
+  /* Hide resize controls */
+  .moveable-control .moveable-resizer {
+    display: none !important;
+  }
+
+  /* Hide the default rotation circle */
+.moveable-control .moveable-rotation-control {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Style the rotation icon */
+
+/* Hide the rotation line */
+.moveable-control .moveable-rotation-line {
+  display: none !important;
+}
+
+/* Reduce size of control points */
+.moveable-control .moveable-control {
+  width: 11px !important;
+  height: 11px !important;
+  margin-left: -4px !important;
+  margin-top: -4px !important;
+}
+
+/* Style the control points */
+.moveable-control .moveable-resizer {
+  width: 12px !important;
+  height: 12px !important;
+  border: 1px solid #fff !important;
+  background: #4a5568 !important;
+  border-radius: 50% !important;
+  margin-left: -4px !important;
+  margin-top: -4px !important;
+}
+
+/* Reduce the control box border width */
+.moveable-control .moveable-control-box {
+  border-width: 2px !important;
+}
+
+
+
+.page-transition {
+  animation: slide 0.5s ease-out forwards;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.custom-field-bg {
+}
+
+.custom-fields-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.custom-fields-table td {
+  padding: 0.5rem;
+  vertical-align: top;
+}
+
+.custom-fields-table td:first-child {
+  width: 30%;
+  white-space: nowrap;
+}
+
+.custom-fields-table td:last-child {
+  width: 70%;
+  word-break: break-word;
+}
+
+
+.perspective {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+.card {
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+}
+.card:hover {
+  transform: rotateY(15deg);
+}
+
+.order-step-number {
+  background: linear-gradient(
+    to top right,
+    rgb(39 39 39) 0%,
+    rgb(242 212 91 / 39%) 100%
+  );
+  background-color: #272727;
+}
+
+.perspective {
+  perspective: 1000px;
+}
+
+.card {
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.card-shadow {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  width: 80%;
+  height: 20px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0) 80%
+  );
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+/* Button hover effect from side */
+.btn {
+  display: block;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  overflow: hidden;
+  position: relative;
+}
+
+.btn span {
+  position: relative;
+  z-index: 2;
+}
+
+.btn-left {
+  position: relative;
+  color: var(--lux-primary); /* Initial text color */
+  transition: color 0.3s ease-in-out;
+}
+
+.btn-left:after {
+  content: "";
+  position: absolute;
+  left: -100%; /* Start completely to the left */
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: var(--lux-primary); /* Background color */
+  transition: all 0.5s ease-in-out;
+  z-index: 0; /* Keep the background below the text */
+}
+
+.btn-left:hover:after {
+  left: 0; /* Slide in the background */
+}
+
+.btn-left:hover {
+  color: white; /* Change text color to white on hover */
+}
+
+.btn-right {
+  position: relative;
+  color: white; /* Initial text color */
+  background: var(--lux-primary);
+  transition: color 0.3s ease-in-out;
+}
+
+.btn-right:after {
+  content: "";
+  position: absolute;
+  left: -100%; /* Start completely to the left */
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: var(--lux-tertiary); /* Background color */
+  transition: all 0.5s ease-in-out;
+  z-index: 0; /* Keep the background below the text */
+}
+
+.btn-right:hover:after {
+  left: 0; /* Slide in the background */
+}
+
+.btn-right:hover {
+  color: var(--lux-primary); /* Change text color to white on hover */
+}
+
+
+.btn-right-cart {
+  position: relative;
+  color: white; /* Initial text color */
+  background: var(--lux-primary);
+  transition: color 0.3s ease-in-out;
+}
+
+.btn-right-cart:after {
+  content: "";
+  position: absolute;
+  left: -100%; /* Start completely to the left */
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: white; /* Background color */
+  transition: all 0.5s ease-in-out;
+  z-index: 0; /* Keep the background below the text */
+}
+
+.btn-right-cart:hover:after {
+  left: 0; /* Slide in the background */
+}
+
+.btn-right-cart:hover {
+  color: var(--lux-primary); /* Change text color to white on hover */
+}
+
+
+/* .card .gloss-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.1) 40%,
+    rgba(255, 255, 255, 0) 80%
+  );
+  opacity: 0.5; 
+  pointer-events: none;
+  z-index: 2;
+  border-radius: 10px;
+  mix-blend-mode: screen; 
+} */
+
+/* .card .gloss-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 10%,
+    rgba(255, 255, 255, 0.4) 40%,
+    rgba(255, 255, 255, 0.4) 60%,
+    rgba(255, 255, 255, 0) 90%
+  );
+  opacity: 0.2;
+  pointer-events: none;
+  z-index: 2;
+  border-radius: 10px;
+  mix-blend-mode: screen; 
+} */
+
+
+/* Pulse effect */
+.play-button .pulsing {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: relative;
+  z-index: 1;
+}
+
+.play-button .pulsing:before,
+.play-button .pulsing:after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  border-radius: inherit;
+  animation: pulsing 2.5s linear infinite;
+}
+
+.play-button .pulsing:after {
+  animation: pulsing1 2.5s linear infinite;
+}
+
+@keyframes pulsing {
+  0% {
+    opacity: 1;
+    transform: scale(1); /* Starts from normal size */
+  }
+  50% {
+    opacity: 0.2;
+    transform: scale(1.5); /* Expands outward */
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2); /* Continues expanding */
+  }
+}
+
+@keyframes pulsing1 {
+  0% {
+    opacity: 1;
+    transform: scale(1); /* Starts from normal size */
+  }
+  50% {
+    opacity: 0.2;
+    transform: scale(1.5); /* Expands outward */
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2); /* Continues expanding */
+  }
+}
+
+.inner-swiperText {
+  position: relative; /* This is important for absolute positioning of pagination */
+}
+
+
+/* Absolutely position the pagination */
+.swiper-pagination {
+  position: absolute; /* Remove from document flow */
+  bottom: -40px; /* Move it below the swiper container */
+  left: 0;
+  width: 100%; /* Ensure it spans the entire width */
+  z-index: 10; /* Make sure it appears above other content */
+}
+
+/* Optional: Styling pagination bullets */
+.swiper-pagination-bullet {
+  background-color: #000; /* Custom color for the bullets */
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #AE9164; /* Active bullet color */
+}
+
+
+:root {
+  --swiper-theme-color: #AE9164 !important;
+}
+
+/* .swiper-button-next, .swiper-button-prev {
+  position: absolute;
+  top: 28rem !important;
+} */
+
+/* .swiper-button-prev {
+  left: -18rem !important;
+  background-image: url("/images/arrow-left.svg") !important;
+  background-repeat: no-repeat;
+  z-index: 99;
+}
+
+.swiper-button-next {
+  right: -1rem !important;
+  background-image: url("/images/arrow-right.svg") !important;
+  background-repeat: no-repeat;
+  z-index: 1000;
+}
+
+
+
+
+@media only screen and (max-width: 767px) and (min-width: 375px) {
+  .swiper-button-prev {
+      left: 15.5rem !important;
+  }
+
+  .swiper-button-next {
+      right: 15.5rem !important;
+  }
+} */
+
+.metal-finish-swiper,
+.input-fields-swiper {
+  width: 100%;
+  padding: 20px 0;
+  position: relative;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #AE9164;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.swiper-button-next {
+  right: -60px;
+}
+
+.swiper-button-prev {
+  left: -60px;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 18px;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #AE9164;
+}
+
+
+

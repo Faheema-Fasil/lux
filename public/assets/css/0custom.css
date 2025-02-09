@@ -1,0 +1,770 @@
+/* == themify & flaticon icons ==*/
+/* @import url("../fonts/Flaticon.woff2");
+@import url("../fonts/themify.woff"); */
+
+
+#bringer-header.is-scrolled,
+.no-banner-header {
+    background-color: rgb(0 0 0 / 40%) !important;
+    backdrop-filter: saturate(150%) blur(12px) !important;
+}
+
+
+.custom-active-tab {
+    background-color: #E1CD75 !important;
+    color: black;
+    border: 1px solid black !important;
+    border-radius: 9999px;
+    /* Fully rounded */
+}
+
+.custom-inactive-tab {
+    background-color: white;
+    color: black;
+    border: 1px solid black !important;
+    border-radius: 9999px;
+    /* Fully rounded */
+}
+
+
+.tilt-container {
+    perspective: 1000px;
+    /* Ensures a 3D perspective */
+    display: inline-block;
+}
+
+.tilt-card {
+    transition: transform 0.3s ease;
+    /* Smooth transition */
+    transform-style: preserve-3d;
+    /* Ensures the 3D effect works */
+}
+
+.tilt-container:hover .tilt-card {
+    transform: rotateX(10deg) rotateY(10deg) scale(1.05);
+    /* Applies the tilt effect on hover */
+}
+
+
+
+
+/* ======= Restaurant Menu style ======= */
+/* .restaurant-menu .owl-carousel .owl-stage-outer {
+    padding: 20px 0 60px 0;
+}
+.restaurant-menu .owl-theme .owl-nav [class*=owl-] {
+    position: absolute;
+    top: 40%;
+    background: transparent;
+    color: #272727;
+    width: 40px;
+    height: 40px;
+    line-height: 30px;
+    border-radius: 50%;
+    border: 1px solid #272727;
+    opacity: 0;
+    transition: all .5s;
+}
+.restaurant-menu .owl-theme .owl-nav [class*=owl-]:hover {
+    background: transparent;
+    color: #272727;
+}
+.restaurant-menu .bg-img .owl-theme .owl-nav [class*=owl-] {
+    color: #fff;
+}
+.restaurant-menu .owl-carousel .owl-nav .owl-next {
+    right: 0;
+}
+.restaurant-menu .owl-carousel .owl-nav .owl-prev {
+    left: 0;
+}
+.restaurant-menu .owl-carousel .owl-nav .owl-next span,
+.restaurant-menu .owl-carousel .owl-nav .owl-prev span {
+    font-size: 12px;
+}
+.restaurant-menu .owl-theme:hover .owl-nav [class*=owl-] {
+    opacity: 1;
+}
+.restaurant-menu .tabs-icon .item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+
+#card-menu .info-wrapper{
+    display: flex;
+    gap: 20px;
+}
+
+
+
+.item.active {
+    color: #fff;
+    position: relative;
+    background: transparent;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #aa8453;
+}
+
+
+
+@media (min-width: 1200px) {
+    .restaurant-menu .owl-carousel .owl-stage-outer {
+        overflow: hidden;
+    }
+    .restaurant-menu .owl-carousel .owl-item {
+        display: inline-block;
+        width: 20%; 
+    }
+}
+ */
+
+.text-blue-600 {
+    border-color: #CCB923 !important
+}
+
+.categories-item {
+    border-color: transparent;
+    transition: border-color 0.3s ease, transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease;
+    filter: blur(1px);
+    /* Apply blur to non-active items by default */
+    opacity: 0.9;
+    /* Reduce opacity for non-active items */
+}
+
+.categories-item-active {
+    border-color: #E1CD75 !important;
+    /* Highlight border for active item */
+    transform: scale(1.1);
+    /* Scale up the active item */
+    filter: none;
+    /* Remove blur effect on the active item */
+    opacity: 1;
+    /* Set full opacity for active item */
+}
+
+.categories-item-image-border img {
+    border: 2px solid transparent;
+    border-radius: 4px;
+    /* Optional: Adjust the radius as needed */
+    transition: border-color 0.3s ease;
+}
+
+.categories-item-active-image img {
+    border-color: #E1CD75;
+    /* Add border to the image of active item */
+}
+
+.blur {
+    filter: blur(1px) !important;
+}
+
+
+.video-test-content {
+    background: rgb(0, 0, 0);
+    background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+    height: 100%;
+}
+
+.video-test-content h3 {
+    margin: 0;
+    /* Remove default margin */
+}
+
+.video-test-content span {
+    display: block;
+    /* Ensure the span is on a new line */
+}
+
+
+
+
+
+/* Ensure images are responsive */
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Style for the button group */
+.button-group {
+    margin-top: 20px;
+}
+
+/* General button style */
+.button-group .btn {
+    padding: 10px 20px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #aa8453;
+    color: #fff;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+/* Hover effect for buttons */
+.button-group .btn:hover {
+    background-color: #8b6d43;
+}
+
+/* Specific styles for the buttons */
+.btn-customize {
+    background-color: #aa8453;
+}
+
+.btn-details {
+    background-color: #666;
+}
+
+
+/* Active tab and content styles */
+.restaurant-menu .tabs-icon .item.active {
+    color: #fff;
+    position: relative;
+    background: transparent;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #aa8453;
+}
+
+/* Active content section styles */
+.restaurant-menu .restaurant-menu-content .cont {
+    display: none;
+}
+
+.restaurant-menu .restaurant-menu-content .cont.active {
+    display: block;
+}
+
+/* Additional styles as provided */
+
+
+
+
+/* Tailwind + Custom Styles */
+
+
+.order-step-number {
+    background: linear-gradient(to top right, rgb(39 39 39) 0%, rgb(242 212 91 / 39%) 100%);
+    background-color: #272727;
+}
+
+
+
+
+/* General Settings */
+.card_products_slider {
+    /* background-color: #ffffff; */
+    padding: 40px 0;
+    /* Reduced padding */
+}
+
+/* Product Card Styling */
+.card_products_slider .product-card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    /* Reduced padding */
+    position: relative;
+    transition: all 0.3s ease;
+    perspective: 1000px;
+    width: 100%;
+    /* Make the width dynamic based on container */
+    height: auto;
+    /* Let height adjust based on content */
+}
+
+.card_products_slider .product-card:hover {
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Flipping Card Container */
+.card_products_slider .flipping-card {
+    width: 100%;
+    height: 250px;
+    /* Reduced height to fit smaller items */
+    perspective: 1000px;
+}
+
+.card_products_slider .flipping-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 1.5s ease-in-out;
+    transform-style: preserve-3d;
+}
+
+.card_products_slider .product-card:hover .flipping-card-inner {
+    transform: rotateY(180deg);
+}
+
+/* Flipping Card Front and Back */
+.card_products_slider .flipping-card-front,
+.card_products_slider .flipping-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    transition: transform 1.5s ease;
+}
+
+.card_products_slider .flipping-card-back {
+    transform: rotateY(180deg);
+}
+
+/* Image Styling */
+.card_products_slider .flipping-card-front img,
+.card_products_slider .flipping-card-back img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+/* Product Title and Price Styling */
+.card_products_slider .product-title {
+    font-size: 20px;
+    /* Reduced font size */
+    color: #333;
+    margin-top: 5px;
+}
+
+.card_products_slider .product-price {
+    font-size: 16px;
+    /* Reduced font size */
+    color: #aa8453;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Button Styling */
+.card_products_slider .btn-primary {
+    background-color: #aa8453;
+    color: #fff;
+    padding: 8px 16px;
+    /* Reduced padding */
+    border-radius: 5px;
+    text-decoration: none;
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    bottom: 10px;
+    /* Adjusted for smaller cards */
+    left: 50%;
+    transform: translateX(-50%);
+    transition: all 0.3s ease;
+}
+
+.card_products_slider .product-card:hover .btn-primary {
+    opacity: 1;
+    visibility: visible;
+}
+
+.card_products_slider .btn-primary:hover {
+    background-color: #8b6d43;
+}
+
+/* Owl Carousel Adjustments */
+.card_products_slider .owl-carousel .item {
+    margin: 10px;
+    /* Reduced margin between items */
+    height: auto;
+}
+
+.card_products_slider .owl-theme .owl-nav [class*=owl-] {
+    position: absolute;
+    top: 40%;
+    background: transparent;
+    color: #272727;
+    width: 30px;
+    height: 30px;
+    /* Reduced size for smaller items */
+    line-height: 30px;
+    border-radius: 50%;
+    border: 1px solid #272727;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.5s ease;
+}
+
+.card_products_slider .owl-carousel:hover .owl-nav [class*=owl-] {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.card_products_slider .owl-carousel .owl-stage-outer {
+    overflow: visible;
+}
+
+.card_products_slider .owl-carousel .owl-stage {
+    display: flex;
+    justify-content: center;
+}
+
+.card_products_slider .owl-carousel .item {
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+/* Make Items Square */
+.card_products_slider .item {
+    aspect-ratio: 1/1;
+    /* Ensure square aspect ratio */
+    height: 200px;
+    /* Set height for smaller items */
+}
+
+/* Owl Carousel Navigation */
+.owl-theme .owl-nav [class*=owl-] {
+    position: absolute;
+    top: 40%;
+    background: transparent;
+    color: #272727;
+    width: 40px;
+    /* Make sure this size fits your design */
+    height: 40px;
+    line-height: 30px;
+    border-radius: 50%;
+    border: 1px solid #272727;
+    opacity: 1;
+    /* Set opacity to 1 to make sure the nav is visible */
+    pointer-events: auto;
+    transition: all 0.5s ease;
+    display: block;
+    /* Ensure that the buttons are displayed */
+}
+
+/* Positioning for Previous and Next Buttons */
+.owl-carousel .owl-nav .owl-prev {
+    left: -40px;
+    /* Adjust position based on design */
+}
+
+.owl-carousel .owl-nav .owl-next {
+    right: -40px;
+    /* Adjust position based on design */
+}
+
+.owl-theme .owl-nav {
+    margin-top: -20px;
+    /* Adjust to align the nav with your slider */
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+}
+
+.owl-theme .owl-nav [class*=owl-] {
+    z-index: 999;
+    /* Increase z-index to make sure buttons are on top */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Ensure cards are responsive and adjust to different screen sizes */
+.rotate-card-container {
+    perspective: 1000px;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    position: relative;
+}
+
+.rotate-card {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 1.5s ease-in-out, box-shadow 1.5s ease-in-out;
+    position: relative;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.rotate-card .front,
+.rotate-card .back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+}
+
+.rotate-card .back {
+    transform: rotateY(180deg);
+}
+
+.rotate-card-container:hover .rotate-card {
+    transform: rotateY(180deg);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Ensure images fill the entire card and are responsive */
+.rotate-card img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Add some padding for smaller screens to maintain structure */
+@media (max-width: 768px) {
+    .rotate-card-container {
+        padding: 20px;
+    }
+
+    .rotate-card img {
+        height: 300px;
+    }
+
+    .menu-info {
+        text-align: center;
+    }
+}
+
+/* Add responsive typography adjustments */
+@media (max-width: 768px) {
+    .menu-info h5 {
+        font-size: 1.5rem;
+    }
+
+    .menu-info p {
+        font-size: 1rem;
+    }
+
+    .menu-info a {
+        font-size: 0.875rem;
+        padding: 10px 20px;
+    }
+}
+
+/* Additional styles for smoother visuals */
+.rotate-card .front {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(0, 0, 0, 0.1));
+    box-shadow: inset 0px 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.rotate-card .back {
+    background: linear-gradient(145deg, rgba(0, 0, 0, 0.9), rgba(255, 255, 255, 0.1));
+    box-shadow: inset 0px -10px 20px rgba(0, 0, 0, 0.1);
+}
+
+
+
+
+
+
+
+
+.background-section {
+    background-image: url('../img/sec-bg.png');
+    /* Set the path to your background image */
+    background-size: cover;
+    /* Make sure the image covers the entire section */
+    background-position: center bottom;
+    /* Center the background image */
+    position: relative;
+    z-index: 1;
+}
+
+.background-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background: rgba(0, 0, 0, 0.5);  */
+    z-index: -1;
+}
+
+.background-section h2,
+.button-group p {
+    z-index: 1;
+}
+
+.owl-theme .owl-nav [class*=owl-] {
+    z-index: 999;
+    /* Increase z-index to make sure buttons are on top */
+}
+
+
+
+
+
+
+
+
+
+/* Adjust the position of the navigation buttons within the specific swiper instance */
+.product-swiper .swiper-button-next {
+    right: 14%;
+    /* Move it more to the right */
+}
+
+.product-swiper .swiper-button-prev {
+    left: 14%;
+    /* Move it more to the left */
+}
+
+/* Optional: Customize the size and style of the arrows */
+.product-swiper .swiper-button-next,
+.product-swiper .swiper-button-prev {
+    width: 40px;
+    height: 40px;
+    color: #000;
+    /* Arrow color */
+}
+
+/* Adjust for different screen sizes if needed */
+@media (max-width: 768px) {
+    .product-swiper .swiper-button-next {
+        right: 15px;
+        /* Adjust for smaller screens */
+    }
+
+    .product-swiper .swiper-button-prev {
+        left: 15px;
+        /* Adjust for smaller screens */
+    }
+}
+
+
+
+/* start :: 03-09-2024 :: tuesday */
+/* shop all page card style */
+
+.lx-card {
+    transition: all 0.3s;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+
+.lx-card:hover {
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+}
+
+.lx-img-area {
+    border-radius: 10px;
+    background-color: white;
+}
+
+.lx-add-cart-btn {
+    z-index: 2;
+    bottom: -65px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.4s;
+    /* background-color: #cdaf34; */
+    background-color: #aa8453;
+    box-shadow: #aa8453 0px 13px 27px -5px, #705e146a 0px 8px 16px -8px;
+}
+
+.lx-add-cart-btn:hover {
+    background-color: #f0dac6 !important;
+    color: black;
+}
+
+.lx-card:hover .lx-add-cart-btn {
+    bottom: 0;
+}
+
+
+.lx-slideshow img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.5s ease-in-out;
+    opacity: 0;
+    z-index: 0;
+}
+
+.lx-slideshow img:first-child {
+    opacity: 1;
+}
+
+.lx-card-info label {
+    margin: 0;
+}
+
+.lx-card-info p {
+    color: white;
+}
+
+.lx-card-preview {
+    transition: all 0.4s;
+}
+
+
+.lx-card-preview:hover img {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+@media screen and (max-width:1024px) {
+    .lx-card-preview-wrapper {
+        flex-direction: column;
+    }
+}
+
+.lx-card-form input[type="radio"] {
+    color: #aa8453 !important;
+    margin: 0 !important;
+}
+
+.lx-card-form input {
+    color: black !important;
+}
+
+.lx-background-img-section::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 310px;
+    background-color: white;
+    bottom: 0;
+    left: 0;
+    filter: blur(60px);
+}
+
+.lx-card-info-f {
+    display: none;
+}
+
+
+/* end :: 03-09-2024 :: tuesday */
