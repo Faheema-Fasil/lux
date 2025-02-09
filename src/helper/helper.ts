@@ -164,15 +164,6 @@ export const captureSwiperImages = async (swiperRef: any, setIsCapturing: any) =
     const img = slide.querySelector("img");
     if (!img) return null;
 
-    await new Promise((resolve, reject) => {
-      img.onload = () => {
-        img.decode().then(() => {
-          requestAnimationFrame(() => resolve(img));
-        }).catch(reject);
-      };
-      img.onerror = () => reject(new Error("Image failed to load"));
-    });
-
     const capturedCanvas = await toCanvas(slide, {
       pixelRatio: 1,
       backgroundColor: undefined,
@@ -201,7 +192,13 @@ export const captureSwiperImages = async (swiperRef: any, setIsCapturing: any) =
     return capturedCanvas;
   };
 
+  await captureSlide(0);
+  await captureSlide(0);
+  await captureSlide(0);
   const frontCanvas = await captureSlide(0);
+  await captureSlide(1);
+  await captureSlide(1);
+  await captureSlide(1);
   const backCanvas = await captureSlide(1);
 
   swiper.slideTo(originalIndex);
