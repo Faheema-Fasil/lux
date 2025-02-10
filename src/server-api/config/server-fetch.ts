@@ -36,9 +36,9 @@ export const fetchWithCache = async (
       headers: isFormData ? { ...headers, 'Accept': '*/*' } : headers, 
       // cache: "no-store",
       cache: cache,
-      next: { revalidate: 20 },
+      // next: { revalidate: 20 },
       // next: { revalidate: 0 },
-      // next: { revalidate: 1000 },
+      next: { revalidate: 1000 },
       ...(body && { body: isFormData ? body : JSON.stringify(body) }), 
     });
 

@@ -116,7 +116,7 @@ const MyCart = () => {
                               className="absolute mt-6"
                               style={{
                                 width: "140px",
-                                height: "105px",
+                                height: "93px",
                                 // overflow: "hidden",
                                 position: "relative",
                               }}

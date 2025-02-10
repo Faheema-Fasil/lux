@@ -371,7 +371,7 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
               {/* <img src={cardFront} alt="Card Front Preview" className=" border  rounded-3xl border-gray-300 " /> */}
               {/* <Image src={cardFront} height={700} width={800} alt="Card Front Preview" className=" border  rounded-3xl border-gray-300 " /> */}
 
-              {/* {isCapturing ? (
+              {isCapturing ? (
                 <img
                   src={cardFront}
                   alt="Card Front Preview"
@@ -386,8 +386,8 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
                   alt="Card Front Preview"
                   className="border rounded-3xl border-gray-300"
                 />
-              )} */}
-
+              )}
+{/* 
               <Image
                 src={cardFront}
                 key={cardFront}
@@ -397,7 +397,7 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
                 alt="Card Front Preview"
                 className={`border rounded-3xl border-gray-300 transition-opacity duration-200 `}
                 priority
-              />
+              /> */}
 
               {/* Display Border */}
               {displayBorder && (
@@ -408,9 +408,8 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
                     opacity: getTextOpacity(""),
                   }}
                 >
-                  <Image
+                  <img
                     src={displayBorder}
-                    layout="fill"
                     alt="Display Border"
                     crossOrigin="anonymous"
                     className="shadow-lg border border-gray-300 rounded-3xl"
@@ -459,9 +458,8 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
                       }}
                     >
                       {element && (
-                        <Image
+                        <img
                           src={element}
-                          layout="fill"
                           alt="Uploaded Preview"
                           crossOrigin="anonymous"
                           width={elementValues[name].width}
@@ -793,17 +791,24 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
           <SwiperSlide>
             <div className="relative">
               {/* Card Back Image */}
-              {/* <img
-              crossOrigin="anonymous" src={cardBack} alt="Card Back Preview" className="shadow-lg border border-gray-300 rounded-3xl " /> */}
-              {/* <Image
-                src={cardBack}
-                height={700}
-                width={800}
-                alt="Card Back Preview"
-                className=" border  rounded-3xl border-gray-300 "
-              /> */}
+              {isCapturing ? (
+                <img
+                  src={cardBack}
+                  alt="Card Back Preview"
+                  className="border rounded-3xl border-gray-300"
+                  onLoad={() => setImageLoaded(true)} // Ensure image is fully loaded before capture
+                />
+              ) : (
+                <Image
+                  src={cardBack}
+                  height={700}
+                  width={800}
+                  alt="Card Back Preview"
+                  className="border rounded-3xl border-gray-300"
+                />
+              )}
 
-              <Image
+              {/* <Image
                 src={cardBack}
                 key={cardBack}
                 height={700}
@@ -812,7 +817,7 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
                 className=" border  rounded-3xl border-gray-300 "
                 priority
                 crossOrigin="anonymous"
-              />
+              /> */}
 
               {/* Card Number (Single Placement) */}
               {cardPlacement === "back" && elementValues.number && (
@@ -937,7 +942,7 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
               )}
             </div>
           </SwiperSlide>
-          <div className="absolute bottom-8 xl:bottom-0 z-[30] left-1/2 transform -translate-x-1/2 flex space-x-5">
+          <div id="swiperNavigation" className="absolute bottom-8 xl:bottom-0 z-[30] left-1/2 transform -translate-x-1/2 flex space-x-5">
             {[0, 1].map((index) => (
               <button
                 key={index}
