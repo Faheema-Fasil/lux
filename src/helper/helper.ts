@@ -174,19 +174,23 @@ export const captureSwiperImages = async (swiperRef: any, setIsCapturing: any, i
 
     await toCanvas(slide, {
       pixelRatio: 1,
+      includeQueryParams: true,
       backgroundColor: undefined,
     });
     await toCanvas(slide, {
       pixelRatio: 1,
+      includeQueryParams: true,
       backgroundColor: undefined,
     });
     await toCanvas(slide, {
       pixelRatio: 1,
+      includeQueryParams: true,
       backgroundColor: undefined,
     });
 
     await toCanvas(slide, {
       pixelRatio: 1,
+      includeQueryParams: true,
       backgroundColor: undefined,
     });
 
