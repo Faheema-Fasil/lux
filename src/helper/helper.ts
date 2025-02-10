@@ -155,10 +155,6 @@ export const captureSwiperImages = async (swiperRef: any, setIsCapturing: any, i
   const captureSlide = async (index: number) => {
     swiper.slideTo(index);
 
-    if (!imageLoaded) {
-      await new Promise((resolve) => setTimeout(resolve, 500)); // Wait for image load
-    }
-
     const img = document.querySelector(".swiper-slide-active img") as HTMLImageElement;
     if (img && !img.complete) {
       try {
