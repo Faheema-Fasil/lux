@@ -1,8 +1,9 @@
 import { format } from "date-fns";
 import { countryCodes } from "./country";
-import { fetchDataApi, uploadImageApi } from "@/server-api/apifunctions/apiService";
-import { cssColors } from "./colors";
+import {  fetchDataApi, fetchDataClientApi, uploadImageApi } from "@/server-api/apifunctions/apiService";
 import html2canvas from "html2canvas";
+import { cssColors } from "./colors";
+import { toCanvas } from "html-to-image";
 import { apiEndpoints } from "@/server-api/config/api.endpoints";
 import axios from "axios";
 
@@ -142,60 +143,24 @@ export const uploadImage = async (imgData: string, fileName: string, size?: numb
 };
 
 export const captureSwiperImages = async (swiperRef: any, setIsCapturing: any, imageLoaded: any) => {
-  const maxContainerWidth = Math.min(window.innerWidth, 800); 
-  const maxContainerHeight = Math.min(window.innerHeight, 600); 
+  const scaleFactor = 1.24;
 
-  if (!swiperRef?.current?.swiper || !swiperRef.current.swiper.slides.length) {
-    console.error("Swiper not initialized or has no slides");
-    return;
-  }
+  if (!swiperRef?.current?.swiper) return;
 
   const swiper = swiperRef.current.swiper;
   const originalIndex = swiper.activeIndex;
 
-  setIsCapturing(true);
-  await new Promise((resolve) => setTimeout(resolve, 100));
+  setIsCapturing(true)
+  await new Promise((resolve) => setTimeout(resolve, 500));
 
   const captureSlide = async (index: number) => {
     swiper.slideTo(index);
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    if (!imageLoaded) await new Promise((resolve) => setTimeout(resolve, 500));
 
-    const captureContainer = document.getElementById("captureContainer");
-    if (!captureContainer) {
-      console.error("Capture container not found.");
-      return null;
+    if (!imageLoaded) {
+      await new Promise((resolve) => setTimeout(resolve, 500)); // Wait for image load
     }
 
-    const cloneContainer = captureContainer.cloneNode(true) as HTMLElement;
-    document.body.appendChild(cloneContainer);
-
-    const swiperNav = cloneContainer.querySelector("#swiperNavigation");
-    if (swiperNav) {
-      (swiperNav as HTMLElement).style.display = "none";
-    }
-
-    cloneContainer.style.position = "absolute";
-    cloneContainer.style.top = "-9999px";
-    cloneContainer.style.left = "-9999px";
-    cloneContainer.style.pointerEvents = "none";
-    cloneContainer.style.overflow = "hidden";
-
-    const width = captureContainer.scrollWidth;
-    const height = captureContainer.scrollHeight;
-
-    const scaleX = maxContainerWidth / width;
-    const scaleY = maxContainerHeight / height;
-    const scale = Math.min(scaleX, scaleY, 1);
-
-    cloneContainer.style.transform = `scale(${scale})`;
-    cloneContainer.style.transformOrigin = "top left";
-    cloneContainer.style.width = `${width}px`;
-    cloneContainer.style.height = `${height}px`;
-
-    await new Promise((resolve) => setTimeout(resolve, 100));
-
-    const img = cloneContainer.querySelector(".swiper-slide-active img") as HTMLImageElement;
+    const img = document.querySelector(".swiper-slide-active img") as HTMLImageElement;
     if (img && !img.complete) {
       try {
         await new Promise<void>((resolve:any, reject) => {
@@ -204,351 +169,93 @@ export const captureSwiperImages = async (swiperRef: any, setIsCapturing: any, i
         });
       } catch (error) {
         console.error(error);
-        document.body.removeChild(cloneContainer);
+        document.body.removeChild(img);
         return null;
       }
     }
 
-    const capturedCanvas = await html2canvas(cloneContainer, {
-      scale: window.devicePixelRatio || 1,
-      backgroundColor: null,
-      useCORS: true,
-      logging: false,
+    const slide: any = document.querySelector(".swiper-slide-active");
+    if (!slide) return null;
+
+    await toCanvas(slide, {
+      pixelRatio: 1,
+      backgroundColor: undefined,
+    });
+    await toCanvas(slide, {
+      pixelRatio: 1,
+      backgroundColor: undefined,
+    });
+    await toCanvas(slide, {
+      pixelRatio: 1,
+      backgroundColor: undefined,
     });
 
-    document.body.removeChild(cloneContainer);
+    await toCanvas(slide, {
+      pixelRatio: 1,
+      backgroundColor: undefined,
+    });
+
+    const capturedCanvas = await toCanvas(slide, {
+      pixelRatio: 1,
+      backgroundColor: undefined,
+      includeQueryParams: true,
+    });
+
+    const { width, height } = slide.getBoundingClientRect();
+    if (capturedCanvas.width !== width || capturedCanvas.height !== height) {
+      const normalizedCanvas = document.createElement("canvas");
+      normalizedCanvas.width = width;
+      normalizedCanvas.height = height;
+      const ctx = normalizedCanvas.getContext("2d");
+      if (ctx) {
+        ctx.drawImage(capturedCanvas, 0, 0, capturedCanvas.width, capturedCanvas.height, 0, 0, width, height);
+      }
+      return normalizedCanvas;
+    }
 
     return capturedCanvas;
-  };
-
-  const cropTransparentBackground = (canvas: HTMLCanvasElement) => {
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return canvas;
-
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const { data, width, height } = imageData;
-
-    let top = height, left = width, right = 0, bottom = 0;
-
-    for (let y = 0; y < height; y++) {
-      for (let x = 0; x < width; x++) {
-        const alpha = data[(y * width + x) * 4 + 3]; 
-        if (alpha > 0) { 
-          if (x < left) left = x;
-          if (x > right) right = x;
-          if (y < top) top = y;
-          if (y > bottom) bottom = y;
-        }
-      }
-    }
-
-    if (right === 0 && bottom === 0) return canvas;
-
-    const croppedWidth = right - left + 1;
-    const croppedHeight = bottom - top + 1;
-    const croppedCanvas = document.createElement("canvas");
-    croppedCanvas.width = croppedWidth;
-    croppedCanvas.height = croppedHeight;
-    const croppedCtx = croppedCanvas.getContext("2d");
-
-    if (croppedCtx) {
-      croppedCtx.drawImage(canvas, left, top, croppedWidth, croppedHeight, 0, 0, croppedWidth, croppedHeight);
-    }
-
-    return croppedCanvas;
   };
 
   const frontCanvas = await captureSlide(0);
   const backCanvas = await captureSlide(1);
 
   swiper.slideTo(originalIndex);
+  setIsCapturing(false);
 
   if (frontCanvas && backCanvas) {
-    const croppedFront = cropTransparentBackground(frontCanvas);
-    const croppedBack = cropTransparentBackground(backCanvas);
-
     const mergedCanvas = document.createElement("canvas");
     const context = mergedCanvas.getContext("2d");
-
     if (!context) return;
 
-    const totalWidth = croppedFront.width + croppedBack.width;
-    const maxHeight = Math.max(croppedFront.height, croppedBack.height);
+    mergedCanvas.width = (frontCanvas.width + backCanvas.width) * scaleFactor;
+    mergedCanvas.height = Math.max(frontCanvas.height, backCanvas.height) * scaleFactor ;
 
-    mergedCanvas.width = totalWidth;
-    mergedCanvas.height = maxHeight;
+    context.drawImage(
+      frontCanvas,          
+      0, 0,                 
+      frontCanvas.width,    
+      frontCanvas.height,    
+      0, 0,                  
+      frontCanvas.width * scaleFactor, 
+      frontCanvas.height * scaleFactor  
+    );
 
-    context.fillStyle = "#FFFFFF";
-    context.fillRect(0, 0, mergedCanvas.width, mergedCanvas.height);
+    context.drawImage(
+      backCanvas,
+      0, 0,
+      backCanvas.width,
+      backCanvas.height,
+      frontCanvas.width * scaleFactor, 
+      0,
+      backCanvas.width * scaleFactor,
+      backCanvas.height * scaleFactor
+    );
 
-    context.drawImage(croppedFront, 0, 0);
-    context.drawImage(croppedBack, croppedFront.width, 0);
-
-    setIsCapturing(false);
-
-    return mergedCanvas.toDataURL("image/png");
+    const mergedImage = mergedCanvas.toDataURL("image/png");
+    console.log("Merged Image:", mergedImage);
+    return mergedImage;
   }
 };
-
-
-// export const captureSwiperImages = async (swiperRef: any, setIsCapturing: any, imageLoaded: any) => {
-//   const scaleFactor = 1.24;
-
-//   if (!swiperRef?.current?.swiper || !swiperRef.current.swiper.slides.length) {
-//     console.error("Swiper not initialized or has no slides");
-//     return;
-//   }
-
-//   const swiper = swiperRef.current.swiper;
-//   const originalIndex = swiper.activeIndex;
-
-//   setIsCapturing(true);
-
-//   await new Promise((resolve) => setTimeout(resolve, 100));
-
-//   // const captureSlide = async (index: number) => {
-//   //   // Navigate to the target slide.
-//   //   swiper.slideTo(index);
-//   //   await new Promise((resolve) => setTimeout(resolve, 500));
-//   //   if (!imageLoaded) await new Promise((resolve) => setTimeout(resolve, 500));
-
-//   //   // Get the active slide element.
-//   //   const slide = document.querySelector(".swiper-slide-active");
-//   //   if (!slide) {
-//   //     console.error(`Slide ${index} not found.`);
-//   //     return null;
-//   //   }
-
-//   //   // Get the container element.
-//   //   const captureContainer = document.getElementById("captureContainer");
-//   //   if (!captureContainer) {
-//   //     console.error("Capture container not found.");
-//   //     return null;
-//   //   }
-
-//   //   // Use scrollWidth/scrollHeight to get the full intrinsic dimensions.
-//   //   const width = captureContainer.scrollWidth;
-//   //   const height = captureContainer.scrollHeight;
-
-//   //   // Clone the container so that modifications don’t affect the live UI.
-//   //   const cloneContainer = captureContainer.cloneNode(true);
-//   //   const cloneEl = cloneContainer as HTMLElement;
-
-//   //   // Remove transforms to render the element at its natural size.
-//   //   cloneEl.style.transform = "none";
-//   //   // Set explicit dimensions based on the full content size.
-//   //   cloneEl.style.width = `${width}px`;
-//   //   cloneEl.style.height = `${height}px`;
-//   //   // Ensure that overflow is visible so nothing is clipped.
-//   //   cloneEl.style.overflow = "visible";
-
-//   //   // Optionally, remove navigation from the clone.
-//   //   const swiperNav = cloneEl.querySelector("#swiperNavigation");
-//   //   if (swiperNav) {
-//   //     (swiperNav as HTMLElement).style.display = "none";
-//   //   }
-
-//   //   // Instead of positioning far offscreen, place the clone at (0,0) with a low z-index.
-//   //   cloneEl.style.position = "absolute";
-//   //   cloneEl.style.top = "0";
-//   //   cloneEl.style.left = "0";
-//   //   cloneEl.style.zIndex = "-1000";
-//   //   document.body.appendChild(cloneEl);
-
-//   //   // Wait a short moment to ensure the browser has time to render the clone.
-//   //   await new Promise((resolve) => setTimeout(resolve, 100));
-
-//   //   // Ensure that any images in the clone are fully loaded.
-//   //   const img = cloneEl.querySelector(".swiper-slide-active img") as HTMLImageElement;
-//   //   if (img && !img.complete) {
-//   //     try {
-//   //       await new Promise<void>((resolve, reject) => {
-//   //         img.onload = resolve;
-//   //         img.onerror = reject;
-//   //       });
-//   //     } catch (error) {
-//   //       console.error(error);
-//   //       document.body.removeChild(cloneEl);
-//   //       return null;
-//   //     }
-//   //   }
-
-//   //   // Use the devicePixelRatio for better fidelity.
-//   //   const scale = window.devicePixelRatio || 1;
-//   //   const capturedCanvas = await html2canvas(cloneEl, {
-//   //     scale: scale,
-//   //     backgroundColor: null,
-//   //     useCORS: true,
-//   //     logging: false,
-//   //   });
-
-//   //   // Clean up the offscreen clone.
-//   //   document.body.removeChild(cloneEl);
-
-//   //   // Normalize the canvas if needed.
-//   //   if (capturedCanvas.width !== width * scale || capturedCanvas.height !== height * scale) {
-//   //     const normalizedCanvas = document.createElement("canvas");
-//   //     normalizedCanvas.width = width * scale;
-//   //     normalizedCanvas.height = height * scale;
-//   //     const ctx = normalizedCanvas.getContext("2d");
-//   //     if (ctx) {
-//   //       ctx.drawImage(
-//   //         capturedCanvas,
-//   //         0,
-//   //         0,
-//   //         capturedCanvas.width,
-//   //         capturedCanvas.height,
-//   //         0,
-//   //         0,
-//   //         normalizedCanvas.width,
-//   //         normalizedCanvas.height
-//   //       );
-//   //     }
-//   //     return normalizedCanvas;
-//   //   }
-
-//   //   return capturedCanvas;
-//   // };
-
-//   const captureSlide = async (index: number) => {
-//     swiper.slideTo(index);
-//     await new Promise((resolve) => setTimeout(resolve, 500));
-//     if (!imageLoaded) await new Promise((resolve) => setTimeout(resolve, 500));
-
-//     const slide = document.querySelector(".swiper-slide-active");
-//     if (!slide) {
-//       console.error(`Slide ${index} not found.`);
-//       return null;
-//     }
-
-//     const captureContainer = document.getElementById("captureContainer");
-//     if (!captureContainer) {
-//       console.error("Capture container not found.");
-//       return null;
-//     }
-
-//     const width = captureContainer.scrollWidth;
-//     const height = captureContainer.scrollHeight;
-
-//     const cloneContainer = captureContainer.cloneNode(true);
-//     const cloneEl = cloneContainer as HTMLElement;
-
-//     cloneEl.style.transform = "none";
-//     cloneEl.style.width = `${width}px`;
-//     cloneEl.style.height = `${height}px`;
-//     cloneEl.style.overflow = "visible";
-
-//     const swiperNav = cloneEl.querySelector("#swiperNavigation");
-//     if (swiperNav) {
-//       (swiperNav as HTMLElement).style.display = "none";
-//     }
-
-//     cloneEl.style.position = "absolute";
-//     cloneEl.style.top = "-9999px";
-//     cloneEl.style.left = "-9999px";
-//     cloneEl.style.pointerEvents = "none";
-//     document.body.appendChild(cloneEl);
-
-//     await new Promise((resolve) => setTimeout(resolve, 100));
-
-//     const img = cloneEl.querySelector(".swiper-slide-active img") as HTMLImageElement;
-//     if (img && !img.complete) {
-//       try {
-//         await new Promise<void>((resolve: any, reject) => {
-//           img.onload = resolve;
-//           img.onerror = reject;
-//         });
-//       } catch (error) {
-//         console.error(error);
-//         document.body.removeChild(cloneEl);
-//         return null;
-//       }
-//     }
-
-//     // Capture the offscreen clone using html2canvas.
-//     const scale = window.devicePixelRatio || 1;
-//     const capturedCanvas = await html2canvas(cloneEl, {
-//       scale: scale,
-//       backgroundColor: null,
-//       useCORS: true,
-//       logging: false,
-//     });
-
-//     // Remove the offscreen clone.
-//     document.body.removeChild(cloneEl);
-
-//     // Normalize canvas dimensions if needed.
-//     if (capturedCanvas.width !== width * scale || capturedCanvas.height !== height * scale) {
-//       const normalizedCanvas = document.createElement("canvas");
-//       normalizedCanvas.width = width * scale;
-//       normalizedCanvas.height = height * scale;
-//       const ctx = normalizedCanvas.getContext("2d");
-//       if (ctx) {
-//         ctx.drawImage(
-//           capturedCanvas,
-//           0,
-//           0,
-//           capturedCanvas.width,
-//           capturedCanvas.height,
-//           0,
-//           0,
-//           normalizedCanvas.width,
-//           normalizedCanvas.height
-//         );
-//       }
-//       return normalizedCanvas;
-//     }
-
-//     return capturedCanvas;
-//   };
-
-//   const frontCanvas = await captureSlide(0);
-//   const backCanvas = await captureSlide(1);
-
-//   swiper.slideTo(originalIndex);
-
-//   if (frontCanvas && backCanvas) {
-//     const mergedCanvas = document.createElement("canvas");
-//     const context = mergedCanvas.getContext("2d");
-
-//     if (!context) return;
-
-//     const totalWidth = frontCanvas.width + backCanvas.width;
-//     const maxHeight = Math.max(frontCanvas.height, backCanvas.height);
-
-//     mergedCanvas.width = totalWidth * scaleFactor;
-//     mergedCanvas.height = maxHeight * scaleFactor;
-
-//     context.drawImage(
-//       frontCanvas,
-//       0,
-//       0,
-//       frontCanvas.width,
-//       frontCanvas.height,
-//       0,
-//       0,
-//       frontCanvas.width * scaleFactor,
-//       frontCanvas.height * scaleFactor
-//     );
-
-//     context.drawImage(
-//       backCanvas,
-//       0,
-//       0,
-//       backCanvas.width,
-//       backCanvas.height,
-//       frontCanvas.width * scaleFactor,
-//       0,
-//       backCanvas.width * scaleFactor,
-//       backCanvas.height * scaleFactor
-//     );
-
-//     setIsCapturing(false);
-
-//     const mergedImage = mergedCanvas.toDataURL("image/png");
-//     return mergedImage;
-//   }
-// };
 
 // export const captureSwiperImages = async (
 //   swiper: any,
@@ -708,7 +415,7 @@ export function formatDate(dateString: any) {
 export const fetchProductById = async (productId: number) => {
   try {
     const response = await fetchDataApi(productId);
-    return response;
+    return response
   } catch (err) {
     console.error(`Error fetching product ${productId}:`, err);
     return null; // Handle error gracefully
@@ -725,7 +432,8 @@ export const fetchAllVariationData = async (variationIds: number[]) => {
         (meta: { key: string; value: string[] }) => meta.key === "woo_variation_gallery_images"
       )?.value;
 
-      console.log("galleryImageIds", galleryImageIds);
+    console.log("galleryImageIds",galleryImageIds)
+
 
       let galleryImages: any = [];
       if (Array.isArray(galleryImageIds)) {

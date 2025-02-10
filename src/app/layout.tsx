@@ -46,9 +46,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         />
         <link rel="shortcut icon" href="/src/app/favicon.png" />
         <link rel="canonical" href="https://luxmetallic.com/" />
-        <script
-          src="https://cdn.jsdelivr.net/npm/save-html-as-image@1.7.1/dist/index.min.js"
-        ></script>
         <Script strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${GTM_ID}`} />
         <Script id="google-tag-manager" strategy="afterInteractive">
           {`

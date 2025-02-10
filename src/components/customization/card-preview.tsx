@@ -65,7 +65,6 @@ const CardPreview: React.FC<CardPreviewProps> = ({
   const [isDragging, setIsDragging] = useState({});
   const [isSaving, setIsSaving] = useState(false);
 
-
   // const [visibility, setVisibility] = useState({
   //   name: false,
   //   optional: false,
@@ -283,8 +282,6 @@ const CardPreview: React.FC<CardPreviewProps> = ({
 
             <button
               onClick={handleAddToCart}
-              disabled={addToCartStatus === "submitting"}
-              style={{ cursor: addToCartStatus === "submitting" ? "not-allowed" : "pointer" }}
               className="flex items-center bg-[#b88c4f] text-sm text-nowrap text-white py-2 px-4 rounded hover:bg-[#a77b3f] transition duration-200"
             >
               {addToCartStatus === "submitting" ? (
@@ -320,7 +317,7 @@ const CardPreview: React.FC<CardPreviewProps> = ({
             scale-100 !xs:p-0 xs:scale-[0.7] xl:scale-[0.8] 2xl:scale-70 
             2xl:scale-100 
             p-1 sm:p-2 md:p-1 
-            transition-transform duration-300"
+            transition-transform duration-300" 
         > */}
           {loading ? (
             <div className="animate-pulse flex space-x-4">

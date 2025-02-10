@@ -868,8 +868,6 @@ export default function CustomCardSwiper({
             addToCartStatus === "submitting" ? "opacity-50 cursor-not-allowed" : ""
           } text-white hover:bg-[#9d7c47] bg-[#AE9164] transition duration-200 mt-4`}
           onClick={handleAddToCart}
-          disabled={addToCartStatus === "submitting"}
-          style={{ cursor: addToCartStatus === "submitting" ? "not-allowed" : "pointer" }}
         >
           {addToCartStatus === "submitting" ? (
             <div className="h-5 w-5 flex justify-center border-b-2 border-white rounded-full animate-spin"></div>

@@ -371,7 +371,7 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
               {/* <img src={cardFront} alt="Card Front Preview" className=" border  rounded-3xl border-gray-300 " /> */}
               {/* <Image src={cardFront} height={700} width={800} alt="Card Front Preview" className=" border  rounded-3xl border-gray-300 " /> */}
 
-              {isCapturing ? (
+              {/* {isCapturing ? (
                 <img
                   src={cardFront}
                   alt="Card Front Preview"
@@ -386,18 +386,27 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
                   alt="Card Front Preview"
                   className="border rounded-3xl border-gray-300"
                 />
-              )}
-{/* 
+              )} */}
+
               <Image
                 src={cardFront}
-                key={cardFront}
                 height={700}
                 width={800}
-                crossOrigin="anonymous"
                 alt="Card Front Preview"
-                className={`border rounded-3xl border-gray-300 transition-opacity duration-200 `}
-                priority
-              /> */}
+                className={`border rounded-3xl border-gray-300 transition-opacity duration-200 ${
+                  isCapturing ? "opacity-0" : "opacity-100"
+                }`}
+              />
+
+              <img
+                src={cardFront}
+                alt="Card Front Preview"
+                className={`border rounded-3xl border-gray-300 absolute top-0 left-0 w-full h-full transition-opacity duration-200 ${
+                  isCapturing ? "opacity-100" : "opacity-0"
+                }`}
+                crossOrigin="anonymous"
+                onLoad={() => setImageLoaded(true)}
+              />
 
               {/* Display Border */}
               {displayBorder && (
@@ -510,78 +519,98 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
                   )
               )}
 
-              {cardFront && (
+              {chipSizeFields && chipSize === "big" && (
                 <>
-                  {chipSizeFields && chipSize === "big" && (
+                  <div
+                    className="transition-opacity duration-300 ease-in-out"
+                    style={{
+                      position: "absolute",
+                      left: `${chipValues.left}px`,
+                      top: `${chipValues.top}px`,
+                      width: `${chipValues.width}px`,
+                      height: `${chipValues.height}px`,
+                      transformOrigin: "center center",
+                      opacity: getTextOpacity(""),
+                    }}
+                  >
                     <>
-                      <div
-                        className="transition-opacity duration-300 ease-in-out"
-                        style={{
-                          position: "absolute",
-                          left: `${chipValues.left}px`,
-                          top: `${chipValues.top}px`,
-                          width: `${chipValues.width}px`,
-                          height: `${chipValues.height}px`,
-                          transformOrigin: "center center",
-                          opacity: getTextOpacity(""),
-                        }}
-                      >
-                        <>
-                          <img
-                            src={
-                              chipSizeFields.find((field: any) => field.value.toLowerCase() === "big")?.image ||
-                              "/default-image.png"
-                            }
-                            crossOrigin="anonymous"
-                            alt="Chip"
-                            className=""
-                          />
-                        </>
-                      </div>
-
-                      {elementValues.cardnumber1 && elementValues.cardnumber2 && (
-                        <div
-                          className="transition-opacity duration-300 ease-in-out"
-                          style={{
-                            position: "absolute",
-                            left: `${secondChipValues.left}px`,
-                            top: `${secondChipValues.top}px`,
-                            width: `${chipValues.width}px`,
-                            height: `${chipValues.height}px`,
-                            transformOrigin: "center center",
-                            opacity: getTextOpacity(""),
-                          }}
-                        >
-                          <>
-                            <img
-                              crossOrigin="anonymous"
-                              src={
-                                chipSizeFields.find((field: any) => field.value.toLowerCase() === "big")?.image ||
-                                "/default-image.png"
-                              }
-                              alt="Uploaded Preview"
-                              width={chipValues.width}
-                              height={chipValues.height}
-                              style={{ objectFit: "contain" }}
-                            />
-                          </>
-                        </div>
-                      )}
+                      <img
+                        src={
+                          chipSizeFields.find((field: any) => field.value.toLowerCase() === "big")?.image ||
+                          "/default-image.png"
+                        }
+                        crossOrigin="anonymous"
+                        alt="Chip"
+                        className=""
+                      />
                     </>
-                  )}
+                  </div>
 
-                  {chipSizeFields && chipSize === "small" && (
-                    <>
-                      <div
-                        style={{
-                          position: "absolute",
-                          left: `${smallChipValues.left}px`,
-                          top: `${smallChipValues.top}px`,
-                          width: `${smallChipValues.width}px`,
-                          height: `${smallChipValues.height}px`,
-                          transformOrigin: "center center",
-                        }}
-                      >
+                  {elementValues.cardnumber1 && elementValues.cardnumber2 && (
+                    <div
+                      className="transition-opacity duration-300 ease-in-out"
+                      style={{
+                        position: "absolute",
+                        left: `${secondChipValues.left}px`,
+                        top: `${secondChipValues.top}px`,
+                        width: `${chipValues.width}px`,
+                        height: `${chipValues.height}px`,
+                        transformOrigin: "center center",
+                        opacity: getTextOpacity(""),
+                      }}
+                    >
+                      <>
+                        <img
+                          crossOrigin="anonymous"
+                          src={
+                            chipSizeFields.find((field: any) => field.value.toLowerCase() === "big")?.image ||
+                            "/default-image.png"
+                          }
+                          alt="Uploaded Preview"
+                          width={chipValues.width}
+                          height={chipValues.height}
+                          style={{ objectFit: "contain" }}
+                        />
+                      </>
+                    </div>
+                  )}
+                </>
+              )}
+
+              {chipSizeFields && chipSize === "small" && (
+                <>
+                  <div
+                    style={{
+                      position: "absolute",
+                      left: `${smallChipValues.left}px`,
+                      top: `${smallChipValues.top}px`,
+                      width: `${smallChipValues.width}px`,
+                      height: `${smallChipValues.height}px`,
+                      transformOrigin: "center center",
+                    }}
+                  >
+                    <img
+                      crossOrigin="anonymous"
+                      src={
+                        chipSizeFields.find((field: any) => field.value.toLowerCase() === "small")?.image ||
+                        "/default-image.png"
+                      }
+                      alt="Chip"
+                      className=""
+                    />
+                  </div>
+                  {elementValues.cardnumber1 && elementValues.cardnumber2 && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        left: `${secondChipValues.left}px`,
+                        top: `${secondChipValues.top}px`,
+                        width: `${chipSize === "small" ? smallChipValues.width : chipValues.width}px`,
+                        height: `${chipSize === "small" ? smallChipValues.height : chipValues.height}px`,
+                        transformOrigin: "center center",
+                      }}
+                    >
+                      <>
                         <img
                           crossOrigin="anonymous"
                           src={
@@ -591,93 +620,65 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
                           alt="Chip"
                           className=""
                         />
-                      </div>
-                      {elementValues.cardnumber1 && elementValues.cardnumber2 && (
-                        <div
-                          style={{
-                            position: "absolute",
-                            left: `${secondChipValues.left}px`,
-                            top: `${secondChipValues.top}px`,
-                            width: `${chipSize === "small" ? smallChipValues.width : chipValues.width}px`,
-                            height: `${chipSize === "small" ? smallChipValues.height : chipValues.height}px`,
-                            transformOrigin: "center center",
-                          }}
-                        >
-                          <>
-                            <img
-                              crossOrigin="anonymous"
-                              src={
-                                chipSizeFields.find((field: any) => field.value.toLowerCase() === "small")?.image ||
-                                "/default-image.png"
-                              }
-                              alt="Chip"
-                              className=""
-                            />
-                          </>
-                        </div>
-                      )}
-                    </>
+                      </>
+                    </div>
                   )}
                 </>
               )}
 
-              {cardFront && (
-                <>
-                  {/* Text Elements */}
-                  {[
-                    {
-                      name: "name",
-                      refKey: "name",
-                      condition: namePlacement === "front",
-                    },
-                    {
-                      name: "optional",
-                      refKey: "optional",
-                      condition: elementValues.optional,
-                    },
-                    {
-                      name: "optional2",
-                      refKey: "optional2",
-                      condition: elementValues.optional2,
-                    },
-                    {
-                      name: "number",
-                      refKey: "number",
-                      condition: cardPlacement === "front" && elementValues.number,
-                    },
-                    {
-                      name: "topnumber",
-                      refKey: "topnumber",
-                      condition: elementValues.topnumber,
-                    },
-                    {
-                      name: "cardnumber1",
-                      refKey: "cardnumber1",
-                      condition: dualCardNumberPlacement === "front" && elementValues.cardnumber1,
-                    },
-                    {
-                      name: "cardnumber2",
-                      refKey: "cardnumber2",
-                      condition: dualCardNumberPlacement === "front" && elementValues.cardnumber2,
-                    },
-                  ].map(
-                    ({ name, refKey, condition }) =>
-                      condition && (
-                        <div
-                          key={name}
-                          className=" transition-opacity duration-300 ease-in-out"
-                          ref={(el: any) => (targetRefs.current[refKey] = el)}
-                          onClick={() => handleTextClick(name)}
-                          style={{
-                            ...getTextElementStyle(name),
-                            opacity: getTextOpacity(name),
-                          }}
-                        >
-                          {inputValues[name] ? inputValues[name] : getPlaceholderText(name)}
-                        </div>
-                      )
-                  )}
-                </>
+              {/* Text Elements */}
+              {[
+                {
+                  name: "name",
+                  refKey: "name",
+                  condition: namePlacement === "front",
+                },
+                {
+                  name: "optional",
+                  refKey: "optional",
+                  condition: elementValues.optional,
+                },
+                {
+                  name: "optional2",
+                  refKey: "optional2",
+                  condition: elementValues.optional2,
+                },
+                {
+                  name: "number",
+                  refKey: "number",
+                  condition: cardPlacement === "front" && elementValues.number,
+                },
+                {
+                  name: "topnumber",
+                  refKey: "topnumber",
+                  condition: elementValues.topnumber,
+                },
+                {
+                  name: "cardnumber1",
+                  refKey: "cardnumber1",
+                  condition: dualCardNumberPlacement === "front" && elementValues.cardnumber1,
+                },
+                {
+                  name: "cardnumber2",
+                  refKey: "cardnumber2",
+                  condition: dualCardNumberPlacement === "front" && elementValues.cardnumber2,
+                },
+              ].map(
+                ({ name, refKey, condition }) =>
+                  condition && (
+                    <div
+                      key={name}
+                      className=" transition-opacity duration-300 ease-in-out"
+                      ref={(el: any) => (targetRefs.current[refKey] = el)}
+                      onClick={() => handleTextClick(name)}
+                      style={{
+                        ...getTextElementStyle(name),
+                        opacity: getTextOpacity(name),
+                      }}
+                    >
+                      {inputValues[name] ? inputValues[name] : getPlaceholderText(name)}
+                    </div>
+                  )
               )}
 
               {/* Moveable Components */}
@@ -791,12 +792,23 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
           <SwiperSlide>
             <div className="relative">
               {/* Card Back Image */}
+              {/* <img
+              crossOrigin="anonymous" src={cardBack} alt="Card Back Preview" className="shadow-lg border border-gray-300 rounded-3xl " /> */}
+              {/* <Image
+                src={cardBack}
+                height={700}
+                width={800}
+                alt="Card Back Preview"
+                className=" border  rounded-3xl border-gray-300 "
+              /> */}
+
               {isCapturing ? (
                 <img
+                  crossOrigin="anonymous"
                   src={cardBack}
-                  alt="Card Back Preview"
+                  alt="Card Front Preview"
                   className="border rounded-3xl border-gray-300"
-                  onLoad={() => setImageLoaded(true)} // Ensure image is fully loaded before capture
+                  onLoad={() => setImageLoaded(true)}
                 />
               ) : (
                 <Image
@@ -804,20 +816,9 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
                   height={700}
                   width={800}
                   alt="Card Back Preview"
-                  className="border rounded-3xl border-gray-300"
+                  className=" border  rounded-3xl border-gray-300 "
                 />
               )}
-
-              {/* <Image
-                src={cardBack}
-                key={cardBack}
-                height={700}
-                width={800}
-                alt="Card Back Preview"
-                className=" border  rounded-3xl border-gray-300 "
-                priority
-                crossOrigin="anonymous"
-              /> */}
 
               {/* Card Number (Single Placement) */}
               {cardPlacement === "back" && elementValues.number && (
@@ -942,7 +943,7 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
               )}
             </div>
           </SwiperSlide>
-          <div id="swiperNavigation" className="absolute bottom-8 xl:bottom-0 z-[30] left-1/2 transform -translate-x-1/2 flex space-x-5">
+          <div className="absolute bottom-8 xl:bottom-0 z-[30] left-1/2 transform -translate-x-1/2 flex space-x-5">
             {[0, 1].map((index) => (
               <button
                 key={index}
