@@ -76,7 +76,7 @@ const CardPageLayout: React.FC<CardPageLayoutProps> = ({
 
       {/* Features Section */}
       <FeaturesSection
-        backgroundImage={featureBackground}
+        backgroundImage={'/bg-b.jpg'}
         title={featureTitle}
         subtitle={featureSubtitle}
         features={features}

@@ -393,20 +393,10 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
                 height={700}
                 width={800}
                 alt="Card Front Preview"
-                className={`border rounded-3xl border-gray-300 transition-opacity duration-200 ${
-                  isCapturing ? "opacity-0" : "opacity-100"
-                }`}
+                className={`border rounded-3xl border-gray-300 transition-opacity duration-200`}
               />
 
-              <img
-                src={cardFront}
-                alt="Card Front Preview"
-                className={`border rounded-3xl border-gray-300 absolute top-0 left-0 w-full h-full transition-opacity duration-200 ${
-                  isCapturing ? "opacity-100" : "opacity-0"
-                }`}
-                crossOrigin="anonymous"
-                onLoad={() => setImageLoaded(true)}
-              />
+             
 
               {/* Display Border */}
               {displayBorder && (
@@ -794,15 +784,15 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
               {/* Card Back Image */}
               {/* <img
               crossOrigin="anonymous" src={cardBack} alt="Card Back Preview" className="shadow-lg border border-gray-300 rounded-3xl " /> */}
-              {/* <Image
+              <Image
                 src={cardBack}
                 height={700}
                 width={800}
                 alt="Card Back Preview"
                 className=" border  rounded-3xl border-gray-300 "
-              /> */}
+              />
 
-              {isCapturing ? (
+              {/* {isCapturing ? (
                 <img
                   crossOrigin="anonymous"
                   src={cardBack}
@@ -818,7 +808,7 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
                   alt="Card Back Preview"
                   className=" border  rounded-3xl border-gray-300 "
                 />
-              )}
+              )} */}
 
               {/* Card Number (Single Placement) */}
               {cardPlacement === "back" && elementValues.number && (

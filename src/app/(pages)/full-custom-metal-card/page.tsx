@@ -49,7 +49,7 @@ const CustomCardPage = async () => {
       cardData={customCardData}
       bodyContent={bodyContent}
       features={customData.featuresData}
-      featureBackground="https://tomsher.co/LUX/wp-content/uploads/2024/12/bg-b.jpg"
+      featureBackground="/bg-b.jpg"
       featureTitle={customData.homeData.acf.metal_nfc_cards_features_title || "Custom Card Features"}
       featureSubtitle={
         customData.homeData.acf.metal_nfc_cards_features_subtitle ||

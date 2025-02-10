@@ -1,7 +1,6 @@
 import { format } from "date-fns";
 import { countryCodes } from "./country";
-import {  fetchDataApi, fetchDataClientApi, uploadImageApi } from "@/server-api/apifunctions/apiService";
-import html2canvas from "html2canvas";
+import {  fetchDataApi, uploadImageApi } from "@/server-api/apifunctions/apiService";
 import { cssColors } from "./colors";
 import { toCanvas } from "html-to-image";
 import { apiEndpoints } from "@/server-api/config/api.endpoints";

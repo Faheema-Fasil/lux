@@ -13,11 +13,12 @@ const FeaturesSection: React.FC<FeaturesSectionProps> = ({
   subtitle,
   features,
 }) => {
+  console.log("backgroundImage",backgroundImage)
   return (
     <div
       className="services section-padding bg-black bg-center py-[80px] w-full px-0"
       style={{
-        backgroundImage: `url('${backgroundImage}')`,
+        backgroundImage: `url(${backgroundImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundAttachment: "fixed",
