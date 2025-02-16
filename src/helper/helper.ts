@@ -2,7 +2,7 @@ import { format } from "date-fns";
 import { countryCodes } from "./country";
 import { fetchDataApi, uploadImageApi } from "@/server-api/apifunctions/apiService";
 import { cssColors } from "./colors";
-import { toCanvas } from "html-to-image";
+import { toCanvas, toPng } from "html-to-image";
 import { apiEndpoints } from "@/server-api/config/api.endpoints";
 import axios from "axios";
 
@@ -156,98 +156,34 @@ export const captureSwiperImages = async (swiperRef: any, setIsCapturing: any, i
     swiper.slideTo(index);
 
     const img = document.querySelector(".swiper-slide-active img") as HTMLImageElement;
-    // if (img && !img.complete) {
-    //   try {
-    //     await new Promise<void>((resolve: any, reject) => {
-    //       img.onload = resolve;
-    //       img.onerror = reject;
-    //     });
-    //   } catch (error) {
-    //     console.error(error);
-    //     document.body.removeChild(img);
-    //     return null;
-    //   }
-    // }
 
     const slide: any = document.querySelector(".swiper-slide-active");
     if (!slide) return null;
 
-    // await toCanvas(slide, {
-    //   pixelRatio: 1,
-    //   backgroundColor: undefined,
-    // });
-
-    // await toCanvas(slide, {
-    //   pixelRatio: 1,
-    // });
-    // await toCanvas(slide, {
-    //   pixelRatio: 1,
-    // });
-    // await toCanvas(slide, {
-    //   pixelRatio: 1,
-    // });
-
-    const capturedCanvas = await toCanvas(slide, {
+    const capturedImage = await toPng(slide, {
       pixelRatio: 1,
-    });
+      cacheBust: true
+    }).then((dataUrl) => {
+      const link = document.createElement('a')
+      link.download = 'card-image.png'
+      link.href = dataUrl
+      link.click()
+    })
+    .catch((err) => {
+      console.log(err)
+    })
 
-    const { width, height } = slide.getBoundingClientRect();
-    if (capturedCanvas.width !== width || capturedCanvas.height !== height) {
-      const normalizedCanvas = document.createElement("canvas");
-      normalizedCanvas.width = width;
-      normalizedCanvas.height = height;
-      const ctx = normalizedCanvas.getContext("2d");
-      if (ctx) {
-        ctx.drawImage(capturedCanvas, 0, 0, capturedCanvas.width, capturedCanvas.height, 0, 0, width, height);
-      }
-      return normalizedCanvas;
-    }
-
-    return capturedCanvas;
+    return capturedImage;
   };
 
   const frontCanvas = await captureSlide(0);
-  const backCanvas = await captureSlide(1);
+  // const backCanvas = await captureSlide(1);
 
   swiper.slideTo(originalIndex);
   setIsCapturing(false);
 
-  if (frontCanvas && backCanvas) {
-    const mergedCanvas = document.createElement("canvas");
-    const context = mergedCanvas.getContext("2d");
-    if (!context) return;
-
-    mergedCanvas.width = (frontCanvas.width + backCanvas.width) * scaleFactor;
-    mergedCanvas.height = Math.max(frontCanvas.height, backCanvas.height) * scaleFactor;
-
-    context.drawImage(
-      frontCanvas,
-      0,
-      0,
-      frontCanvas.width,
-      frontCanvas.height,
-      0,
-      0,
-      frontCanvas.width * scaleFactor,
-      frontCanvas.height * scaleFactor
-    );
-
-    context.drawImage(
-      backCanvas,
-      0,
-      0,
-      backCanvas.width,
-      backCanvas.height,
-      frontCanvas.width * scaleFactor,
-      0,
-      backCanvas.width * scaleFactor,
-      backCanvas.height * scaleFactor
-    );
-
-    const mergedImage = mergedCanvas.toDataURL("image/png");
-    console.log("Merged Image:", mergedImage);
-    return mergedImage;
-  }
+  return frontCanvas;
+  
 };
 
 // export const captureSwiperImages = async (
