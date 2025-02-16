@@ -2,11 +2,9 @@ import { format } from "date-fns";
 import { countryCodes } from "./country";
 import { fetchDataApi, uploadImageApi } from "@/server-api/apifunctions/apiService";
 import { cssColors } from "./colors";
-import { toCanvas, toPng } from "html-to-image";
+import { toCanvas } from "html-to-image";
 import { apiEndpoints } from "@/server-api/config/api.endpoints";
 import axios from "axios";
-import { createContext, destroyContext, domToPng } from 'modern-screenshot'
-
 
 // export const formatPrice = (price: string | number) => {
 //   if (price !== null && price !== undefined && !isNaN(Number(price))) {
@@ -148,6 +146,9 @@ export const captureSwiperImages = async (swiperRef: any, setIsCapturing: any, i
 
   if (!swiperRef?.current?.swiper) return;
 
+  const isSafariOrChrome = /safari|chrome/i.test(navigator.userAgent) && !/android/i.test(navigator.userAgent);
+
+
   const swiper = swiperRef.current.swiper;
   const originalIndex = swiper.activeIndex;
 
@@ -158,34 +159,108 @@ export const captureSwiperImages = async (swiperRef: any, setIsCapturing: any, i
     swiper.slideTo(index);
 
     const img = document.querySelector(".swiper-slide-active img") as HTMLImageElement;
+    if (img && !img.complete) {
+      try {
+        await new Promise<void>((resolve: any, reject) => {
+          img.onload = resolve;
+          img.onerror = reject;
+        });
+      } catch (error) {
+        console.error(error);
+        document.body.removeChild(img);
+        return null;
+      }
+    }
 
     const slide: any = document.querySelector(".swiper-slide-active");
     if (!slide) return null;
 
-    const capturedImage = await domToPng(slide, {
-      scale: 0.8, 
-      type: 'image/png',
-    }).then((dataUrl) => {
-      const link = document.createElement('a')
-      link.download = 'card-image.png'
-      link.href = dataUrl
-      link.click()
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+    let dataUrl = "";
+    let capturedCanvas;
+    let i = 0;
+    let maxAttempts;
+    if (isSafariOrChrome) {
+      maxAttempts = 5;
+    } else {
+      maxAttempts = 1;
+    }
+    let cycle = [];
+    let repeat = true;
 
-    return capturedImage;
+    while (repeat && i < maxAttempts) {
+      capturedCanvas = await toCanvas(slide as HTMLImageElement, {
+        fetchRequestInit: {
+          cache: "no-cache",
+        },
+        skipFonts: true,
+        includeQueryParams: true,
+        quality: 1,
+      });
+      i += 1;
+      dataUrl = capturedCanvas.toDataURL("image/png");
+      cycle[i] = dataUrl.length;
+
+      if (dataUrl.length > cycle[i - 1]) repeat = false;
+    }
+
+
+    const { width, height } = slide.getBoundingClientRect();
+    if (capturedCanvas && (capturedCanvas.width !== width || capturedCanvas.height !== height)) {
+      const normalizedCanvas = document.createElement("canvas");
+      normalizedCanvas.width = width;
+      normalizedCanvas.height = height;
+      const ctx = normalizedCanvas.getContext("2d");
+      if (ctx) {
+        ctx.drawImage(capturedCanvas, 0, 0, capturedCanvas.width, capturedCanvas.height, 0, 0, width, height);
+      }
+      return normalizedCanvas;
+    }
+
+    return capturedCanvas;
   };
 
   const frontCanvas = await captureSlide(0);
-  // const backCanvas = await captureSlide(1);
+  const backCanvas = await captureSlide(1);
 
   swiper.slideTo(originalIndex);
   setIsCapturing(false);
 
-  return frontCanvas;
-  
+  if (frontCanvas && backCanvas) {
+    const mergedCanvas = document.createElement("canvas");
+    const context = mergedCanvas.getContext("2d");
+    if (!context) return;
+
+    mergedCanvas.width = (frontCanvas.width + backCanvas.width) * scaleFactor;
+    mergedCanvas.height = Math.max(frontCanvas.height, backCanvas.height) * scaleFactor;
+
+    context.drawImage(
+      frontCanvas,
+      0,
+      0,
+      frontCanvas.width,
+      frontCanvas.height,
+      0,
+      0,
+      frontCanvas.width * scaleFactor,
+      frontCanvas.height * scaleFactor
+    );
+
+    context.drawImage(
+      backCanvas,
+      0,
+      0,
+      backCanvas.width,
+      backCanvas.height,
+      frontCanvas.width * scaleFactor,
+      0,
+      backCanvas.width * scaleFactor,
+      backCanvas.height * scaleFactor
+    );
+
+    const mergedImage = mergedCanvas.toDataURL("image/png");
+    console.log("Merged Image:", mergedImage);
+    return mergedImage;
+  }
 };
 
 // export const captureSwiperImages = async (
