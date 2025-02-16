@@ -40,7 +40,7 @@ const Customization: React.FC<CustomizationSectionProps> = ({
   const [loading, setLoading] = useState<boolean>(true);
 
   // const [allVariations, setAllVariations] = useState<VariationProps[] | null>(null);
-  const [selectedVariationId, setSelectedVariationId] = useState<string | number | null>(null);
+  const [selectedVariationId, setSelectedVariationId] = useState<string | number | null>(allVariations?.[0]?.id);
 
   const [formLabels, setFormLabels] = useState([]);
   const [cardFront, setCardFront] = useState("");
@@ -135,16 +135,17 @@ const Customization: React.FC<CustomizationSectionProps> = ({
   useEffect(() => {
     if (allVariations && allVariations.length > 0) {
       const firstVariation = allVariations[0];
+      setSelectedVariationId(Number(firstVariation?.id));
+
+      fetchFieldData();
+
       setCardFront(
         firstVariation?.galleryImages[0]?.url || product?.images[0]?.src || "/assets/img/detail-page/card-f.png"
       );
       setCardBack(
         firstVariation?.galleryImages[1]?.url || product?.images[1]?.src || "/assets/img/detail-page/card-b.jpg"
       );
-      setSelectedVariationId(firstVariation?.id);
       setProductPrice(Number(firstVariation?.price || 0));
-
-      handleVariationChange(firstVariation?.id);
 
       setLoading(false);
     }
@@ -184,7 +185,13 @@ const Customization: React.FC<CustomizationSectionProps> = ({
     }
   }, [product]);
 
-  //Made compact
+  useEffect(() => {
+    if (formLabels.length) {
+      setTimeout(() => {
+        handleVariationChange(Number(selectedVariationId));
+      }, 100);
+    }
+  }, [selectedVariationId, formLabels]);
 
   const handleVariationChange = (id: number) => {
     setSelectedVariationId(id);
@@ -262,8 +269,6 @@ const Customization: React.FC<CustomizationSectionProps> = ({
         setPredesignedLogoPrice(matchingLogo.price || 0);
       }
     }
-
-   
   };
 
   const fetchFieldData = () => {

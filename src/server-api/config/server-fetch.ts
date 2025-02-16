@@ -37,7 +37,8 @@ export const fetchWithCache = async (
       // cache: "no-store",
       cache: cache,
       // next: { revalidate: 0 },
-      next: { revalidate: 1000 },
+      // next: { revalidate: 1000 },
+      next: { revalidate: 100 },
       ...(body && { body: isFormData ? body : JSON.stringify(body) }), 
       signal: AbortSignal.timeout(60 * 100000),
     });

@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { countryCodes } from "./country";
-import {  fetchDataApi, uploadImageApi } from "@/server-api/apifunctions/apiService";
+import { fetchDataApi, uploadImageApi } from "@/server-api/apifunctions/apiService";
 import { cssColors } from "./colors";
 import { toCanvas } from "html-to-image";
 import { apiEndpoints } from "@/server-api/config/api.endpoints";
@@ -149,55 +149,46 @@ export const captureSwiperImages = async (swiperRef: any, setIsCapturing: any, i
   const swiper = swiperRef.current.swiper;
   const originalIndex = swiper.activeIndex;
 
-  setIsCapturing(true)
-  await new Promise((resolve) => setTimeout(resolve, 500));
+  setIsCapturing(true);
+  await new Promise((resolve) => setTimeout(resolve, 200));
 
   const captureSlide = async (index: number) => {
     swiper.slideTo(index);
 
     const img = document.querySelector(".swiper-slide-active img") as HTMLImageElement;
-    if (img && !img.complete) {
-      try {
-        await new Promise<void>((resolve:any, reject) => {
-          img.onload = resolve;
-          img.onerror = reject;
-        });
-      } catch (error) {
-        console.error(error);
-        document.body.removeChild(img);
-        return null;
-      }
-    }
+    // if (img && !img.complete) {
+    //   try {
+    //     await new Promise<void>((resolve: any, reject) => {
+    //       img.onload = resolve;
+    //       img.onerror = reject;
+    //     });
+    //   } catch (error) {
+    //     console.error(error);
+    //     document.body.removeChild(img);
+    //     return null;
+    //   }
+    // }
 
     const slide: any = document.querySelector(".swiper-slide-active");
     if (!slide) return null;
 
-    await toCanvas(slide, {
-      pixelRatio: 1,
-      includeQueryParams: true,
-      backgroundColor: undefined,
-    });
-    await toCanvas(slide, {
-      pixelRatio: 1,
-      includeQueryParams: true,
-      backgroundColor: undefined,
-    });
-    await toCanvas(slide, {
-      pixelRatio: 1,
-      includeQueryParams: true,
-      backgroundColor: undefined,
-    });
+    // await toCanvas(slide, {
+    //   pixelRatio: 1,
+    //   backgroundColor: undefined,
+    // });
 
-    await toCanvas(slide, {
-      pixelRatio: 1,
-      includeQueryParams: true,
-      backgroundColor: undefined,
-    });
+    // await toCanvas(slide, {
+    //   pixelRatio: 1,
+    // });
+    // await toCanvas(slide, {
+    //   pixelRatio: 1,
+    // });
+    // await toCanvas(slide, {
+    //   pixelRatio: 1,
+    // });
 
     const capturedCanvas = await toCanvas(slide, {
       pixelRatio: 1,
-      backgroundColor: undefined,
-      includeQueryParams: true,
     });
 
     const { width, height } = slide.getBoundingClientRect();
@@ -227,24 +218,27 @@ export const captureSwiperImages = async (swiperRef: any, setIsCapturing: any, i
     if (!context) return;
 
     mergedCanvas.width = (frontCanvas.width + backCanvas.width) * scaleFactor;
-    mergedCanvas.height = Math.max(frontCanvas.height, backCanvas.height) * scaleFactor ;
+    mergedCanvas.height = Math.max(frontCanvas.height, backCanvas.height) * scaleFactor;
 
     context.drawImage(
-      frontCanvas,          
-      0, 0,                 
-      frontCanvas.width,    
-      frontCanvas.height,    
-      0, 0,                  
-      frontCanvas.width * scaleFactor, 
-      frontCanvas.height * scaleFactor  
+      frontCanvas,
+      0,
+      0,
+      frontCanvas.width,
+      frontCanvas.height,
+      0,
+      0,
+      frontCanvas.width * scaleFactor,
+      frontCanvas.height * scaleFactor
     );
 
     context.drawImage(
       backCanvas,
-      0, 0,
+      0,
+      0,
       backCanvas.width,
       backCanvas.height,
-      frontCanvas.width * scaleFactor, 
+      frontCanvas.width * scaleFactor,
       0,
       backCanvas.width * scaleFactor,
       backCanvas.height * scaleFactor
@@ -414,7 +408,7 @@ export function formatDate(dateString: any) {
 export const fetchProductById = async (productId: number) => {
   try {
     const response = await fetchDataApi(productId);
-    return response
+    return response;
   } catch (err) {
     console.error(`Error fetching product ${productId}:`, err);
     return null; // Handle error gracefully
@@ -431,8 +425,7 @@ export const fetchAllVariationData = async (variationIds: number[]) => {
         (meta: { key: string; value: string[] }) => meta.key === "woo_variation_gallery_images"
       )?.value;
 
-    console.log("galleryImageIds",galleryImageIds)
-
+      console.log("galleryImageIds", galleryImageIds);
 
       let galleryImages: any = [];
       if (Array.isArray(galleryImageIds)) {
