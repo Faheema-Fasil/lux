@@ -371,22 +371,21 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
               {/* <img src={cardFront} alt="Card Front Preview" className=" border  rounded-3xl border-gray-300 " /> */}
               {/* <Image src={cardFront} height={700} width={800} alt="Card Front Preview" className=" border  rounded-3xl border-gray-300 " /> */}
 
-              <img
+              {/* <img
                 src={cardFront}
                 alt="Card Front Preview"
-                className={`border rounded-3xl border-gray-300 ${isCapturing ? "opacity-100" : "opacity-0"}`}
+                className={`border rounded-3xl border-gray-300 `}
                 onLoad={() => setImageLoaded(true)}
-                style={{ position: "absolute", top: 0, left: 0 }}
                 loading="eager"
                 crossOrigin="anonymous"
-              />
+              /> */}
               <Image
                 src={cardFront}
                 height={700}
                 width={800}
                 crossOrigin="anonymous"
                 alt="Card Front Preview"
-                className={`border rounded-3xl border-gray-300 ${isCapturing ? "opacity-0" : "opacity-100"}`}
+                className={`border rounded-3xl border-gray-300`}
               />
 
               {/* <Image
@@ -783,15 +782,15 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
             <div className="relative">
               {/* Card Back Image */}
 
-              <img
+              {/* <img
                 src={cardBack}
                 alt="Card Back Preview"
                 crossOrigin="anonymous"
-                className={`border rounded-3xl border-gray-300 ${isCapturing ? "opacity-100" : "opacity-0"}`}
+                className={`border rounded-3xl border-gray-300 `}
                 onLoad={() => setImageLoaded(true)}
                 style={{ position: "absolute", top: 0, left: 0 }}
                 loading="eager"
-              />
+              /> */}
 
               <Image
                 src={cardBack}
@@ -799,7 +798,7 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
                 width={800}
                 crossOrigin="anonymous"
                 alt="Card Back Preview"
-                className={`border rounded-3xl border-gray-300 ${isCapturing ? "opacity-0" : "opacity-100"}`}
+                className={`border rounded-3xl border-gray-300 `}
               />
 
               {/* {isCapturing ? (

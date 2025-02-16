@@ -162,7 +162,7 @@ export const captureSwiperImages = async (swiperRef: any, setIsCapturing: any, i
 
     const capturedImage = await toPng(slide, {
       pixelRatio: 1,
-      cacheBust: true
+      includeQueryParams: true,
     }).then((dataUrl) => {
       const link = document.createElement('a')
       link.download = 'card-image.png'
