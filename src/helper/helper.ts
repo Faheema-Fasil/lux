@@ -5,6 +5,8 @@ import { cssColors } from "./colors";
 import { toCanvas, toPng } from "html-to-image";
 import { apiEndpoints } from "@/server-api/config/api.endpoints";
 import axios from "axios";
+import { createContext, destroyContext, domToPng } from 'modern-screenshot'
+
 
 // export const formatPrice = (price: string | number) => {
 //   if (price !== null && price !== undefined && !isNaN(Number(price))) {
@@ -160,9 +162,9 @@ export const captureSwiperImages = async (swiperRef: any, setIsCapturing: any, i
     const slide: any = document.querySelector(".swiper-slide-active");
     if (!slide) return null;
 
-    const capturedImage = await toPng(slide, {
-      pixelRatio: 1,
-      includeQueryParams: true,
+    const capturedImage = await domToPng(slide, {
+      scale: 0.8, 
+      type: 'image/png',
     }).then((dataUrl) => {
       const link = document.createElement('a')
       link.download = 'card-image.png'
